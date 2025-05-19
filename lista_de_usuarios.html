@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Tarjetas de Usuario</title>
+  <style>
+    user-card {
+      display: block;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Lista de Usuarios</h1>
+
+  <!-- Aquí irán las tarjetas -->
+  <user-card>
+    <span slot="name">Ana Ramírez</span>
+    <span slot="email">ana@email.com</span>
+    <img slot="avatar" src="Ana.jpg" alt="Ana">
+  </user-card>
+
+  <user-card>
+    <span slot="name">Carlos López</span>
+    <span slot="email">carlos@email.com</span>
+    <img slot="avatar" src="Carlos.jpg" alt="Carlos">
+  </user-card>
+
+  <!-- Template oculto -->
+  <template id="user-card-template">
+    <style>
+      .card {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 15px;
+        max-width: 300px; /* Limita el ancho máximo de la tarjeta */
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background-color: #f9f9f9;
+        flex-wrap: wrap; /* Para que el contenido no se desborde */
+        overflow: hidden; /* Asegura que los elementos dentro de la tarjeta no se desborden */
+      }
+      img {
+        width: 100px; /* Ajusta el tamaño a 100px de ancho */
+        height: 100px; /* Ajusta el tamaño a 100px de alto */
+        max-width: 100%; /* Asegura que la imagen no se haga más grande de lo necesario */
+        max-height: 100%; /* Asegura que la imagen no se haga más grande de lo necesario */
+        border-radius: 50%;
+        object-fit: cover; /* Mantiene la proporción de la imagen sin distorsionarla */
+        flex-shrink: 0; /* Evita que la imagen se reduzca más de lo necesario */
+      }
+      .info {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1; /* Permite que el texto ocupe el espacio restante */
+      }
+      .name {
+        font-weight: bold;
+        font-size: 1.1em;
+      }
+      .email {
+        font-size: 0.9em;
+        color: #666;
+      }
+    </style>
+    <div class="card">
+      <slot name="avatar"></slot>
+      <div class="info">
+        <div class="name"><slot name="name">Nombre no disponible</slot></div>
+        <div class="email"><slot name="email">Correo no disponible</slot></div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    class UserCard extends HTMLElement {
+      constructor() {
+        super();
+        const template = document.getElementById('user-card-template');
+        const content = template.content.cloneNode(true);
+        this.attachShadow({ mode: 'open' }).appendChild(content);
+      }
+    }
+
+    customElements.define('user-card', UserCard);
+  </script>
+</body>
+</html>
